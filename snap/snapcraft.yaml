@@ -1,0 +1,94 @@
+name: termite # you probably want to 'snapcraft register <name>'
+base: core18
+version: '0.15.1'
+summary: VTE-based terminal
+description: |
+  A keyboard-centric VTE-based terminal, aimed at use within a window manager
+  with tiling and/or tabbing support.
+
+grade: devel # must be 'stable' to release into candidate/stable channels
+confinement: devmode # use 'strict' once you have the right plugs and slots
+
+parts:
+  vte-ng:
+    plugin: autotools
+    source: https://github.com/thestinger/vte-ng.git
+    build-packages:
+      - gir1.2-vte-2.91
+      - libglib2.0-dev
+      - libgnutls28-dev
+      - libgtk-3-dev
+      - libpango1.0-dev
+      - libpcre2-dev
+      - libvte-2.91-0
+      - libvte-2.91-common
+      - zlib1g-dev
+    stage-packages:
+      - libvte-2.91-common
+      - libatk1.0-0
+      - libcairo2
+      - libfribidi0
+      - libglib2.0-0
+      - libgnutls30
+      - libgtk-3-0
+      - libpango-1.0-0
+      - libpangocairo-1.0-0
+      - libpcre2-8-0
+      # - libstdc++6
+      - zlib1g
+
+  termite:
+    after: [ vte-ng ]
+    plugin: make
+    source: https://github.com/sd-hd/termite.git
+    source-tag: 'v15.1'
+    source-type: git
+    #configflags: [ --prefix=/usr ]
+    build-packages:
+      - gnutls-bin
+      - gperf
+      - gtk-doc-tools
+      - intltool
+      - libtool
+      - libgirepository1.0-dev
+      - libglib3.0-cil-dev
+      - libgnutls28-dev
+      - libgtk-3-dev
+      - libpcre2-dev
+      - libxml2-utils
+      - valac
+    stage-packages:
+      - libatk1.0-0
+      - libgirepository-1.0-1
+      - libglib3.0-cil
+      - libgtk-3-0
+      - libpango-1.0-0
+      - libcairo2
+      - libuuid1
+      - libx11-6
+      - libgdk-pixbuf2.0-0
+      #- libpcre2
+
+apps:
+  termite:
+    command: termite
+    plugs:
+      - desktop
+      - desktop-legacy
+      - wayland
+      - x11
+      # - dbus
+      # - device-buttons
+      # - display-control
+      # - docker
+      - personal-files
+      - home
+      - gpg-keys
+      - gsettings
+      - mount-observe
+      - cifs-mount
+      - log-observe
+      # - cpu-control
+      # - block-devices
+      # - firewall-control
+      # - kernel-module-control
