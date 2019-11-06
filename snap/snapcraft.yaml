@@ -1,6 +1,6 @@
 name: termite # you probably want to 'snapcraft register <name>'
 base: core18
-version: '0.15.1'
+version: '0.15.2'
 summary: VTE-based terminal
 description: |
   A keyboard-centric VTE-based terminal, aimed at use within a window manager
@@ -10,11 +10,23 @@ grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: devmode # use 'strict' once you have the right plugs and slots
 
 parts:
+  fribidi:
+    plugin: meson
+    source: https://github.com/fribidi/fribidi.git
+    source-tag: v1.0.7
+    meson-parameters: [ '--prefix=/usr', '-Ddocs=false' ]
   vte-ng:
-    plugin: autotools
-    source: https://github.com/thestinger/vte-ng.git
+    after: [ fribidi ]
+    plugin: meson
+    source: https://github.com/sd-hd/vte-ng.git
+    source-tag: 0.58.2-ng
+    meson-parameters: [ '--prefix=/usr', '-Ddocs=false' ]
     build-packages:
+      - gettext
+      - gtk-doc-tools
+      - libgirepository1.0-dev
       - gir1.2-vte-2.91
+      # - libfribidi-dev
       - libglib2.0-dev
       - libgnutls28-dev
       - libgtk-3-dev
@@ -22,12 +34,14 @@ parts:
       - libpcre2-dev
       - libvte-2.91-0
       - libvte-2.91-common
+      - libxml2-utils
       - zlib1g-dev
+      - valac
     stage-packages:
       - libvte-2.91-common
       - libatk1.0-0
       - libcairo2
-      - libfribidi0
+      # - libfribidi0
       - libglib2.0-0
       - libgnutls30
       - libgtk-3-0
@@ -43,19 +57,23 @@ parts:
     source: https://github.com/sd-hd/termite.git
     source-tag: 'v15.1'
     source-type: git
-    #configflags: [ --prefix=/usr ]
     build-packages:
       - gnutls-bin
       - gperf
       - gtk-doc-tools
       - intltool
       - libtool
+      - libdconf-dev
       - libgirepository1.0-dev
+      - libglib2.0-dev
       - libglib3.0-cil-dev
       - libgnutls28-dev
       - libgtk-3-dev
       - libpcre2-dev
+      - libx11-dev
       - libxml2-utils
+      - libsm-dev
+      - uuid-dev
       - valac
     stage-packages:
       - libatk1.0-0
@@ -71,7 +89,11 @@ parts:
 
 apps:
   termite:
-    command: termite
+    command: usr/bin/termite
+    desktop: usr/share/applications/termite.desktop
+    # Required until Snapcraft 3.9
+    # https://github.com/snapcore/snapcraft/pull/2686
+    adapter: full
     plugs:
       - desktop
       - desktop-legacy
