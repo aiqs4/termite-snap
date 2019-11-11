@@ -1,6 +1,6 @@
-name: termite # you probably want to 'snapcraft register <name>'
+name: termite
 base: core18
-version: '0.15.2'
+version: '0.15.3'
 summary: VTE-based terminal
 description: |
   A keyboard-centric VTE-based terminal, aimed at use within a window manager
@@ -55,7 +55,7 @@ parts:
     after: [ vte-ng ]
     plugin: make
     source: https://github.com/sd-hd/termite.git
-    source-tag: 'v15.1'
+    source-tag: 'v15.3'
     source-type: git
     build-packages:
       - gnutls-bin
