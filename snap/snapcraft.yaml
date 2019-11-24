@@ -103,7 +103,7 @@ apps:
       # - device-buttons
       # - display-control
       # - docker
-      - personal-files
+      # - personal-files
       - home
       - gpg-keys
       - gsettings
