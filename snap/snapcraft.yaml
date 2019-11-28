@@ -9,12 +9,42 @@ description: |
 grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: devmode # use 'strict' once you have the right plugs and slots
 
+apps:
+  termite:
+    command: usr/bin/termite
+    desktop: usr/share/applications/termite.desktop
+    # Required until Snapcraft 3.9
+    # https://github.com/snapcore/snapcraft/pull/2686
+    adapter: full
+    plugs:
+      - desktop
+      - desktop-legacy
+      - wayland
+      - x11
+      # - dbus
+      # - device-buttons
+      # - display-control
+      # - docker
+      # - personal-files
+      - home
+      - gpg-keys
+      - gsettings
+      - mount-observe
+      - cifs-mount
+      - log-observe
+      # - cpu-control
+      # - block-devices
+      # - firewall-control
+      # - kernel-module-control
+
+
 parts:
   fribidi:
     plugin: meson
     source: https://github.com/fribidi/fribidi.git
     source-tag: v1.0.7
     meson-parameters: [ '--prefix=/usr', '-Ddocs=false' ]
+
   vte-ng:
     after: [ fribidi ]
     plugin: meson
@@ -48,7 +78,6 @@ parts:
       - libpango-1.0-0
       - libpangocairo-1.0-0
       - libpcre2-8-0
-      # - libstdc++6
       - zlib1g
 
   termite:
@@ -87,30 +116,3 @@ parts:
       - libgdk-pixbuf2.0-0
       #- libpcre2
 
-apps:
-  termite:
-    command: usr/bin/termite
-    desktop: usr/share/applications/termite.desktop
-    # Required until Snapcraft 3.9
-    # https://github.com/snapcore/snapcraft/pull/2686
-    adapter: full
-    plugs:
-      - desktop
-      - desktop-legacy
-      - wayland
-      - x11
-      # - dbus
-      # - device-buttons
-      # - display-control
-      # - docker
-      # - personal-files
-      - home
-      - gpg-keys
-      - gsettings
-      - mount-observe
-      - cifs-mount
-      - log-observe
-      # - cpu-control
-      # - block-devices
-      # - firewall-control
-      # - kernel-module-control
