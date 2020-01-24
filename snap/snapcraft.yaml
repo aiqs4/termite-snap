@@ -1,6 +1,6 @@
 name: termite
 base: core18
-version: '0.15.3-54'
+version: '0.15.3-54-0classic1'
 summary: VTE-based terminal
 description: |
   A keyboard-centric VTE-based terminal, aimed at use within a window manager
@@ -9,46 +9,13 @@ description: |
 # icon: termite.png
 
 grade: stable
-confinement: strict
-
-environment:
-  SHELL: bash
-  #
-  LC_ALL: C.UTF-8
-
-  # --- Prep EGL ---
-  __EGL_VENDOR_LIBRARY_DIRS: $SNAP/etc/glvnd/egl_vendor.d:$SNAP/usr/share/glvnd/egl_vendor.d
-  # LIBGL_DRIVERS_PATH: ${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/dri
-  LIBVA_DRIVERS_PATH: ${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/dri
-
-  # --- Prep GDK ---
-  GDK_BACKEND: wayland
-  CLUTTER_BACKEND: wayland
+confinement: classic
 
 
 apps:
   termite:
     command: usr/bin/termite
     desktop: usr/share/applications/termite.desktop
-    extensions:
-      - gnome-3-28
-
-
-plugs:
-  desktop:
-  desktop-legacy:
-  wayland:    
-  x11:
-  hardware-observe:
-  home:
-  gpg-keys:
-  gpg-public-keys:
-  mount-observe:
-  log-observe:
-  ssh-keys:
-  system-observe:
-  gpg-keys:
-  gsettings:
 
 
 build-packages:
@@ -58,16 +25,6 @@ build-packages:
 
 
 parts:
-  addons: # FIXME: move/mount this to/from outside
-    plugin: nil
-    stage-packages:
-      - ssh
-      - byobu
-    stage:
-      - -usr/share/doc
-      - -usr/share/man
-
-
   fribidi:
     plugin: meson
     source: https://github.com/fribidi/fribidi.git
@@ -126,9 +83,7 @@ parts:
     source-type: git
     build-packages:
       - gnutls-bin
-      - gperf
-      - gtk-doc-tools
-      - intltool
+      # - gperf
       - libtool
       - libdconf-dev
       - libgirepository1.0-dev
