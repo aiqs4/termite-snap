@@ -1,6 +1,6 @@
 name: termite
 base: core18
-version: '0.15.3-54-0classic1'
+version: '0.15.3-55-0classic1'
 summary: VTE-based terminal
 description: |
   A keyboard-centric VTE-based terminal, aimed at use within a window manager
@@ -47,29 +47,22 @@ parts:
       - -Ddocs=false
     build-packages:
       - libgirepository1.0-dev
-      # - gir1.2-vte-2.91
-      # - libfribidi-dev
       - libglib2.0-dev
       - libgnutls28-dev
       - libgtk-3-dev
       - libpango1.0-dev
       - libpcre2-dev
-      #- libvte-2.91-0
-      #- libvte-2.91-common
       - libxml2-utils
       - zlib1g-dev
     stage-packages:
-      #- libvte-2.91-common
       - libatk1.0-0
       - libcairo2
-      # - libfribidi0
       - libglib2.0-0
       - libgnutls30
       - libgtk-3-0
       - libpango-1.0-0
       - libpangocairo-1.0-0
       - libpcre2-8-0
-      # - zlib1g
     stage:
       - -usr/share/doc
       - -usr/share/man
@@ -82,8 +75,6 @@ parts:
     source-tag: 'v15.3'
     source-type: git
     build-packages:
-      - gnutls-bin
-      # - gperf
       - libtool
       - libdconf-dev
       - libgirepository1.0-dev
@@ -107,6 +98,5 @@ parts:
       - libuuid1
       - libx11-6
       - libgdk-pixbuf2.0-0
-      #- libpcre2
     organize:
       config: etc/xdg/termite/config
