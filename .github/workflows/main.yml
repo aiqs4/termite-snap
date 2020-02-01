@@ -9,6 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: jhenstridge/snapcraft-build-action@v1
+        id: snapcraft
 
       # TODO: already in above
       # - name: Check out Git repository
