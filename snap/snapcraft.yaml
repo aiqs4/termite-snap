@@ -1,10 +1,12 @@
 name: termite
-base: core18
-version: '0.15.3-55-0classic1'
+base: core20
+# base: core20_20_amd64.snap
+version: '0.15.3-0classic58'
 summary: VTE-based terminal
 description: |
   A keyboard-centric VTE-based terminal, aimed at use within a window manager
   with tiling and/or tabbing support.
+build-base: core18
 
 # icon: termite.png
 
@@ -16,7 +18,6 @@ apps:
   termite:
     command: usr/bin/termite
     desktop: usr/share/applications/termite.desktop
-
 
 build-packages:
   - cmake

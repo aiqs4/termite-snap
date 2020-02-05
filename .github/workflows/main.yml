@@ -1,6 +1,10 @@
 name: termite-snap
 
-on: [push]
+on: 
+  push: 
+    tags:
+      - "[0-9]+**"
+      - "v[0-9]+**"
 
 jobs:
   my-job:
@@ -8,23 +12,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - uses: frabert/replace-string-action@v1.1
+        id: git-tag
+        with:
+          pattern: 'refs/tags/'
+          string: ${{ github.ref }}
+          replace-with: ''
+
       - uses: jhenstridge/snapcraft-build-action@v1
         id: snapcraft
-
-      # TODO: already in above
-      # - name: Check out Git repository
-      #   uses: actions/checkout@master
-
-
-        #       - uses: actions/upload-artifact@v1
-        #         with:
-        #           path: ${{ steps.snapcraft.outputs.snap }}
 
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1.0.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # TODO: FIXME: check if this already exist
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
@@ -38,5 +41,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ./${{ steps.snapcraft.outputs.snap }}
-          asset_name: termite-snap-${{ github.ref }}
+          asset_name: ${{ github.workflow }}-${{ steps.git-tag.outputs.replaced }}
           asset_content_type: application/zip
