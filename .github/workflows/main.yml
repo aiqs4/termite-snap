@@ -1,6 +1,10 @@
 name: termite-snap
 
-on: [push]
+on: 
+  push: 
+    tags:
+      - "[0-9]+**"
+      - "v[0-9]+**"
 
 jobs:
   my-job:
@@ -8,17 +12,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: jhenstridge/snapcraft-build-action@v1
+      - uses: sd-hd/snapcraft-build-action@v1
         id: snapcraft
-
-      # TODO: already in above
-      # - name: Check out Git repository
-      #   uses: actions/checkout@master
-
-
-        #       - uses: actions/upload-artifact@v1
-        #         with:
-        #           path: ${{ steps.snapcraft.outputs.snap }}
 
       - name: Create Release
         id: create_release
